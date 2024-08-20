@@ -1,0 +1,44 @@
+Table users {
+  id UUID [pk]
+  username text [not null]
+  email text [not null, unique]
+  password_hash text [not null]
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+
+  Note: 'Stores user info'
+}
+
+Table artworks {
+  id UUID [pk]
+  url text [not null]
+  title text [not null]
+  alt_text text [not null]
+  user_id UUID [ref: > users.id]
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+
+  Note: 'Stores metadata for the voxel art'
+}
+
+Table likes {
+  user_id UUID [ref: > users.id]
+  artwork_id UUID [ref: > artworks.id]
+  created_at timestamp [default: `now()`]
+
+  Indexes {
+    (user_id, artwork_id) [pk]
+  }
+
+  Note: 'Stores records of each image liked by a user'
+}
+
+// We store the aggregate data separately as it's updated and read differently from the rest of the metadata
+Table artwork_aggregates {
+  artwork_id UUID [pk, ref: - artworks.id]
+  likes_count integer [default: 0]
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+
+  Note: 'Stores aggregate data, like total counts, for the voxel art'
+}
