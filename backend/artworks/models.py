@@ -1,7 +1,7 @@
 import uuid
 
+from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
 
 class Artwork(models.Model):
     # Use UUIDs which work better for distributed systems
@@ -11,4 +11,4 @@ class Artwork(models.Model):
     alt_text = models.TextField("Alt Text", null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
