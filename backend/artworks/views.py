@@ -1,6 +1,9 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpRequest
+from rest_framework import viewsets
+
+from .models import Artwork
+from .serializers import ArtworkSerializer
 
 
-def index(request: HttpRequest) -> HttpResponse:
-    return HttpResponse("Hello world, you're at the artworks index")
+class ArtworkViewSet(viewsets.ModelViewSet):
+    queryset = Artwork.objects.all()
+    serializer_class = ArtworkSerializer
