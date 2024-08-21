@@ -10,6 +10,16 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  localstack:
+    image: localstack/localstack:3.6.0
+    environment:
+      - SERVICES=s3
+      - DATA_DIR=/tmp/localstack/data
+    volumes:
+      - ./localstack_setup.sh:/etc/localstack/init/ready.d/script.sh
+      - ./.localstack:/var/lib/localstack # Save S3 data locally for testing purposes
+    ports:
+      - "4566:4566"
 
 volumes:
   pgdata:
