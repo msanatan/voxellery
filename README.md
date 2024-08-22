@@ -35,3 +35,7 @@ I like making voxel art with [MagicaVoxel](https://ephtracy.github.io). It's fun
   - Particularly, in this app the email is the unique field for users, and username is their display name. Not required, this change was done more out of curiousity
 - I'd planned for the React app to be deployed separately, and statically hosted. So I needed to learn how to get a JWT and permissions set up for the backend
 - Next.js is cool because it has routing and many other things set up for ease of use. However, like Django, there's a lot to learn before you can get going...
+
+## Credit
+
+Block front from [Kenney](https://kenney.nl)

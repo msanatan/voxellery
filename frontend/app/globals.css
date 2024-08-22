@@ -21,3 +21,12 @@
     text-wrap: balance;
   }
 }
+
+@font-face {
+  font-family: "KenneyBlocks";
+  src: url('/fonts/KenneyBlocks.ttf');
+}
+
+.kenneyblocks {
+  font-family: "KenneyBlocks";
+}
