@@ -18,8 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NavBar />
-        {children}
+        <div className="flex flex-col">
+          <NavBar />
+        </div>
+        <main className="flex-grow px-4 sm:px-6 py-3">{children}</main>
       </body>
     </html>
   );
