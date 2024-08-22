@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Voxellary",
+  title: "Voxellery",
   description: "The premier gallery for Voxel art lovers",
 };
 
