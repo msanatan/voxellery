@@ -1,7 +1,7 @@
 "use client";
 import { Button, Flex, HStack } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
-import LoginButton from "./login/loginbutton";
+import LoginButton from "../login/loginbutton";
 
 export default function NavBar() {
   return (
