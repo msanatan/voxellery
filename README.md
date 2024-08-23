@@ -11,6 +11,7 @@ This project is a simple public gallery (think [Unsplash](https://unsplash.com))
 - View all uploaded voxel art images
 - Upload voxel art to be displayed
 - Like voxel art from other users
+  - Not yet implemented
 
 ## Requirements
 
@@ -30,12 +31,14 @@ I like making voxel art with [MagicaVoxel](https://ephtracy.github.io). It's fun
 
 ## Challenges
 
-- Django's learning curve. It's been about 4 years since I used Django, and it's a lot of concepts to recall to get going
+- Django's learning curve. It's been about 4 years since I used Django, and it's a lot of concepts to recall to get going. Thankfully, not much has changed since!
 - Customising the user auth in Django isn't a simple switch. The docs have a useful guide, but there are few components to change to get it working
-  - Particularly, in this app the email is the unique field for users, and username is their display name. Not required, this change was done more out of curiousity
-- I'd planned for the React app to be deployed separately, and statically hosted. So I needed to learn how to get a JWT and permissions set up for the backend
+  - In this app the email is the unique field for users, and username is their display name. Not required, this change was done more out of curiousity
+- I'd planned for the React app to be deployed separately, and statically hosted. So I needed to learn how to get a JWT and permissions set up for the backend. This, alongside other reasons, led me to using the Django REST Framework, instead of just returning JSON with the default Django setup.
 - Next.js is cool because it has routing and many other things set up for ease of use. However, like Django, there's a lot to learn before you can get going...
+  - Tailwind CSS looks amazing - very flexible and a large community. However, for the timeframe, it wasn't working for me. So I switched to Chakra UI, which I've used before
+- Kind of shocked that Django still doesn't have a flexible CORS settings built-in. Thankfully, the plugin is easy to use <https://github.com/adamchainz/django-cors-headers>
 
-## Credit
+## Credits
 
 Block front from [Kenney](https://kenney.nl)
