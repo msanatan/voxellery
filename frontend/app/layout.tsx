@@ -18,13 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className="flex flex-col">
-          <NavBar />
-        </div>
-        <main className="flex-grow px-4 sm:px-6 py-3">
-          <Providers>{children}</Providers>
-        </main>
+      <body>
+        <Providers>
+          <>
+            <NavBar />
+            {children}
+          </>
+        </Providers>
       </body>
     </html>
   );

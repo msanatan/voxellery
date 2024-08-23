@@ -1,18 +1,37 @@
-import { Button } from "@headlessui/react";
-import Link from "next/link";
+"use client";
+import { Button, Flex, HStack } from "@chakra-ui/react";
+import { Link } from "@chakra-ui/next-js";
 
 export default function NavBar() {
   return (
-    <nav className="flex flex-row justify-between py-4 px-4 sm:px-6 bg-black sticky w-full top-0 start-0 border-b border-gray-600">
-      <a className="kenneyblocks text-white text-2xl">Voxellery</a>
-      <div className="flex md:order-2 space-x-3 rtl:space-x-reverse">
-        <Link href="/login" className="py-2 px-4 text-white text-md">
-          Login
-        </Link>
-        <Button className="rounded bg-white py-2 px-4 text-md text-black">
-          Upload Image
-        </Button>
-      </div>
-    </nav>
+    <Flex
+      flexDirection="row"
+      as="header"
+      position="sticky"
+      top={0}
+      zIndex={1000}
+      bg="black"
+      borderBottom="gray"
+      justify="space-between"
+      paddingY={4}
+      paddingX={4}
+    >
+      {/* Logo on the left */}
+      <Link
+        href="/"
+        className="kenneyblocks"
+        fontSize="2xl"
+        fontWeight="bold"
+        color="white"
+      >
+        Voxellary
+      </Link>
+
+      {/* Menu on the right */}
+      <HStack as="nav" spacing={3}>
+        <Button size="lg">Login</Button>
+        <Button size="lg">Upload Image</Button>
+      </HStack>
+    </Flex>
   );
 }
