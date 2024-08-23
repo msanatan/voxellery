@@ -31,7 +31,7 @@ export default function NavBar() {
       {/* Menu on the right */}
       <HStack as="nav" spacing={3}>
         <LoginButton />
-        <Button size="lg">Upload Image</Button>
+        <Button size={["sm", "lg"]}>Upload Image</Button>
       </HStack>
     </Flex>
   );

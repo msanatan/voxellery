@@ -22,7 +22,7 @@ export default function LoginButton() {
   return (
     <Popover>
       <PopoverTrigger>
-        <Button size="lg">Login</Button>
+        <Button size={["sm", "lg"]}>Login</Button>
       </PopoverTrigger>
       <PopoverContent>
         <PopoverArrow />
