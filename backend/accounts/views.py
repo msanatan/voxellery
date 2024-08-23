@@ -1,5 +1,5 @@
-from rest_framework import generics
-from rest_framework.permissions import AllowAny
+from rest_framework import generics, status
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -15,9 +15,14 @@ class SignUpView(generics.CreateAPIView):
         response = super().create(request, *args, **kwargs)
         user = self.get_object()  # Get the newly created user
         refresh = RefreshToken.for_user(user)
-        response.data['refresh'] = str(refresh)
-        response.data['access'] = str(refresh.access_token)
-        return response
+        return Response(
+            data={
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+                'isAdmin': user.is_admin,
+            },
+            status=status.HTTP_201_CREATED
+        )
 
 class LoginView(generics.GenericAPIView):
     serializer_class = VoxelleryUserSerializer
@@ -30,7 +35,20 @@ class LoginView(generics.GenericAPIView):
         user = VoxelleryUser.objects.filter(email=email).first()
         if user and user.check_password(password):
             refresh = RefreshToken.for_user(user)
-            return Response({
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-            })
+            return Response(
+                data={
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                    'isAdmin': user.is_admin,
+                },
+                status=status.HTTP_201_CREATED
+            )
+
+class LogoutView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        refresh_token = request.data["refresh"]
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+        return Response(data={'success': True}, status=status.HTTP_205_RESET_CONTENT)
