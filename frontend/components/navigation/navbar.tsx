@@ -1,7 +1,8 @@
 "use client";
-import { Button, Flex, HStack } from "@chakra-ui/react";
+import { Flex, HStack } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
 import LoginButton from "../login/loginbutton";
+import UploadImageButton from "../upload/uploadimagebutton";
 
 export default function NavBar() {
   return (
@@ -21,9 +22,10 @@ export default function NavBar() {
       <Link
         href="/"
         className="kenneyblocks"
-        fontSize="2xl"
-        fontWeight="bold"
+        fontSize={["xl", "3xl"]}
         color="white"
+        textDecoration="none"
+        _hover={{ textDecoration: "none" }}
       >
         Voxellary
       </Link>
@@ -31,7 +33,7 @@ export default function NavBar() {
       {/* Menu on the right */}
       <HStack as="nav" spacing={3}>
         <LoginButton />
-        <Button size={["sm", "lg"]}>Upload Image</Button>
+        <UploadImageButton />
       </HStack>
     </Flex>
   );
