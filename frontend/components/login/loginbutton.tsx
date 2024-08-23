@@ -47,36 +47,41 @@ export default function LoginButton() {
             />
             <TabPanels>
               <TabPanel>
-                <FormControl>
+                <FormControl mt={4}>
                   <FormLabel>Email address</FormLabel>
                   <Input type="email" name="email" />
                 </FormControl>
-                <FormControl>
+
+                <FormControl mt={4}>
                   <FormLabel>Password</FormLabel>
                   <Input type="password" name="password" />
                 </FormControl>
+
                 <Button mt={4} colorScheme="teal">
                   Submit
                 </Button>
               </TabPanel>
               <TabPanel>
-                <FormControl>
+                <FormControl mt={4}>
                   <FormLabel>Email address</FormLabel>
                   <Input type="email" name="email" />
                   <FormHelperText>We'll never share your email.</FormHelperText>
                 </FormControl>
-                <FormControl>
+
+                <FormControl mt={4}>
                   <FormLabel>Username</FormLabel>
                   <Input type="text" name="username" />
                   <FormHelperText>
                     This is how users will see you
                   </FormHelperText>
                 </FormControl>
-                <FormControl>
+
+                <FormControl mt={4}>
                   <FormLabel>Password</FormLabel>
                   <Input type="password" name="password" />
                 </FormControl>
-                <FormControl>
+
+                <FormControl mt={4}>
                   <FormLabel>Confirm Password</FormLabel>
                   <Input type="password" name="confirmPassword" />
                 </FormControl>
