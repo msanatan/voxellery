@@ -27,7 +27,7 @@ export default function NavBar() {
         textDecoration="none"
         _hover={{ textDecoration: "none" }}
       >
-        Voxellary
+        Voxellery
       </Link>
 
       {/* Menu on the right */}
