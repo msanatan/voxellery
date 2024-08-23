@@ -1,6 +1,7 @@
 "use client";
 import { Button, Flex, HStack } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
+import LoginButton from "./login/loginbutton";
 
 export default function NavBar() {
   return (
@@ -29,7 +30,7 @@ export default function NavBar() {
 
       {/* Menu on the right */}
       <HStack as="nav" spacing={3}>
-        <Button size="lg">Login</Button>
+        <LoginButton />
         <Button size="lg">Upload Image</Button>
       </HStack>
     </Flex>
