@@ -1,18 +1,12 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 interface AuthState {
-  refreshToken: string;
-  accessToken: string;
+  refreshToken?: string;
+  accessToken?: string;
   isAuthenticated: boolean;
 }
 
-export const AuthContext = createContext<AuthState | null>(null);
+export const AuthContext = createContext<AuthState>({ isAuthenticated: false });
 export const AuthDispatchContext = createContext(null);
 
 export function useAuth() {
@@ -24,7 +18,7 @@ export function useAuthDispatch() {
 }
 
 function authReducer(
-  state: AuthState | null,
+  state: AuthState,
   action: { type: string; newState?: AuthState }
 ) {
   switch (action.type) {
@@ -39,30 +33,28 @@ function authReducer(
     case "logout":
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
-      return null;
+      return { isAuthenticated: false };
     default:
       throw new Error(`Unknown action: ${action.type}`);
   }
 }
 
 export function AuthProvider({ children }) {
-  const [state, dispatch] = useReducer(authReducer, null);
-  let loadedState: AuthState | null = null;
+  const [rawState, dispatch] = useReducer(authReducer, null);
+  const state = rawState as AuthState;
 
   useEffect(() => {
     const storedAccessToken = localStorage.getItem("accessToken");
-    const storeRefreshToken = localStorage.getItem("refreshToken");
-    if (storedAccessToken && storeRefreshToken) {
-      loadedState = {
-        accessToken: storedAccessToken,
-        refreshToken: storedAccessToken,
-        isAuthenticated: true,
-      };
+    const storedRefreshToken = localStorage.getItem("refreshToken");
+    if (storedAccessToken && storedRefreshToken) {
+      state.accessToken = storedAccessToken;
+      state.refreshToken = storedRefreshToken;
+      state.isAuthenticated = true;
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={loadedState ?? state}>
+    <AuthContext.Provider value={state}>
       <AuthDispatchContext.Provider value={dispatch}>
         {children}
       </AuthDispatchContext.Provider>
