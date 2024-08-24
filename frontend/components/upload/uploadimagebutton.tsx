@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks/useAuth";
 import {
   Box,
   Button,
@@ -13,11 +14,13 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
 import { ChangeEvent, useState } from "react";
 
 export default function UploadImageButton() {
+  const { isAuthenticated } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -32,9 +35,22 @@ export default function UploadImageButton() {
 
   return (
     <>
-      <Button size={["sm", "lg"]} onClick={onOpen}>
-        Upload Image
-      </Button>
+      <Tooltip
+        hasArrow
+        arrowSize={15}
+        label="Login to upload"
+        bg="gray.100"
+        color="black"
+        isDisabled={isAuthenticated}
+      >
+        <Button
+          size={["sm", "lg"]}
+          onClick={onOpen}
+          isDisabled={!isAuthenticated}
+        >
+          Upload Image
+        </Button>
+      </Tooltip>
 
       <Modal isOpen={isOpen} onClose={onClose} size={["xs", "md"]}>
         <ModalOverlay />
