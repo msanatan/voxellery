@@ -22,7 +22,7 @@ import {
 import { ChangeEvent, useState } from "react";
 
 export default function LoginButton() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, accessToken, refreshToken } = useAuth();
   const dispatchAuth = useAuthDispatch();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -39,10 +39,9 @@ export default function LoginButton() {
       console.log(response);
       dispatchAuth({
         type: "login",
-        newState: {
+        tokens: {
           accessToken: response.data.access,
           refreshToken: response.data.refresh,
-          isAuthenticated: false,
         },
       });
     } catch (error) {
@@ -54,7 +53,7 @@ export default function LoginButton() {
     event: MouseEvent<HTMLButtonElement, MouseEvent>
   ): void {
     try {
-      const response = await logout();
+      const response = await logout(accessToken, refreshToken);
       console.log(response);
       dispatchAuth({ type: "logout" });
     } catch (error) {
