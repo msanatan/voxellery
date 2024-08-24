@@ -47,18 +47,21 @@ function authReducer(
 }
 
 export function AuthProvider({ children }) {
-  const [rawState, dispatch] = useReducer(authReducer, initialState);
-  const state = rawState as AuthState;
+  const [state, dispatch] = useReducer(authReducer, initialState);
 
   useEffect(() => {
     const storedAccessToken = localStorage.getItem("accessToken");
     const storedRefreshToken = localStorage.getItem("refreshToken");
     if (storedAccessToken && storedRefreshToken) {
-      state.accessToken = storedAccessToken;
-      state.refreshToken = storedRefreshToken;
-      state.isAuthenticated = true;
+      dispatch({
+        type: "login",
+        tokens: {
+          accessToken: storedAccessToken,
+          refreshToken: storedRefreshToken,
+        },
+      });
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <AuthContext.Provider value={state}>
