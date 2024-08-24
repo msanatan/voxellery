@@ -15,7 +15,11 @@ This project is a simple public gallery (think [Unsplash](https://unsplash.com))
 
 ## Requirements
 
-To run this app you need Docker (4.20+) installed locally.
+To run this app you need
+
+- Docker (4.20+) installed locally
+- Node.js v20+
+- Python 3.12+
 
 ## Why Make This?
 
@@ -28,6 +32,32 @@ I like making voxel art with [MagicaVoxel](https://ephtracy.github.io). It's fun
 ### DB Schema
 
 ![Database schema for Voxellery app, showing relationships between users, artworks, artwork aggregates and likes](./dbschema/schema.png)
+
+## Usage
+
+```bash
+cd backend
+# Run DB and LocalStack that mocks S3
+docker compose up -d
+# Set up Python, only needs to be done once
+python -m venv env
+. env/bin/activate
+pip isntall -r requirements.txt
+# Run DB migrations
+python manage.py migrate
+# Run the server
+python manage.py runserver # Runs at http://localhost:8000/
+```
+
+In a separate terminal:
+
+```bash
+cd frontend
+# Install all deps
+yarn
+# Run the server
+yarn dev # Runs at http://localhost:3000/
+```
 
 ## Challenges
 
