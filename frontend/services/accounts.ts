@@ -1,9 +1,9 @@
+import backendApiClient from "@/utils/backendApiClient";
+
 export function login(email: string, password: string) {
-  return fetch(`http://localhost:8000/api/accounts/login/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  });
+  return backendApiClient.post("/accounts/login/", { email, password });
+}
+
+export function logout() {
+  return backendApiClient.post("/accounts/logout/");
 }
