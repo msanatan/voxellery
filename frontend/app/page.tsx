@@ -29,7 +29,7 @@ export default function Home() {
             title={artwork.title}
             altText={artwork.alt_text}
             url={artwork.url}
-            username={artwork.user.username}
+            username={artwork.user}
           />
         );
       })}

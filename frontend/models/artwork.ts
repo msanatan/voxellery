@@ -3,5 +3,5 @@ interface Artwork {
   url: string;
   title: string;
   alt_text: string;
-  user: User;
+  user: string;
 }
