@@ -6,7 +6,9 @@ interface AuthState {
   isAuthenticated: boolean;
 }
 
-export const AuthContext = createContext<AuthState>({ isAuthenticated: false });
+const initialState: AuthState = { isAuthenticated: false };
+
+export const AuthContext = createContext<AuthState>(initialState);
 export const AuthDispatchContext = createContext(null);
 
 export function useAuth() {
@@ -40,7 +42,7 @@ function authReducer(
 }
 
 export function AuthProvider({ children }) {
-  const [rawState, dispatch] = useReducer(authReducer, null);
+  const [rawState, dispatch] = useReducer(authReducer, initialState);
   const state = rawState as AuthState;
 
   useEffect(() => {

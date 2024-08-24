@@ -11,7 +11,7 @@ const backendApiClient = axios.create({
 
 backendApiClient.interceptors.request.use(
   (config) => {
-    const { accessToken } = useAuth(); // Get accessToken from your custom useAuth hook
+    const { accessToken } = useAuth();
 
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
