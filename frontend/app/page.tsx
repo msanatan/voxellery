@@ -21,7 +21,7 @@ export default function Home() {
   }, []);
 
   return (
-    <SimpleGrid columns={[1, 3]} spacing={4} px={[4, 16]} mt={4}>
+    <SimpleGrid columns={[1, 3]} spacing={[4, 8, 32]} px={[4, 8, 32]} mt={4}>
       {artworks.map((artwork) => {
         return (
           <Artwork

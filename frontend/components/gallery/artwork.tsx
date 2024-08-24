@@ -14,7 +14,7 @@ export default function Artwork({
   username,
 }: ArtworkProps) {
   return (
-    <Card size={["xs", "sm"]}>
+    <Card maxW="md">
       <CardBody>
         <Image
           src={url}
@@ -24,7 +24,7 @@ export default function Artwork({
           w={480}
           h={400}
         />
-        <Stack mt="6" spacing="3">
+        <Stack mt="6" spacing="3" maxW={480}>
           <Heading as="h4" size="sm">
             {title}
           </Heading>
