@@ -18,17 +18,35 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { ChangeEvent, useState } from "react";
+import { createArtwork } from "@/services/artworks";
 
 export default function UploadImageButton() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, accessToken } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [title, setTitle] = useState("");
+  const [altText, setAltText] = useState("");
 
   function handleImageChange(event: ChangeEvent<HTMLInputElement>): void {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      if (file) {
-        setSelectedImage(URL.createObjectURL(file));
+      setSelectedImage(file);
+    }
+  }
+
+  async function onUploadHandler() {
+    if (selectedImage && accessToken) {
+      try {
+        const response = await createArtwork(
+          accessToken,
+          title,
+          altText,
+          selectedImage
+        );
+        console.log("Artwork uploaded:", response.data);
+        onClose();
+      } catch (error) {
+        console.error("Error uploading artwork:", error);
       }
     }
   }
@@ -60,12 +78,22 @@ export default function UploadImageButton() {
           <ModalBody>
             <FormControl>
               <FormLabel>Title</FormLabel>
-              <Input name="title" type="text" />
+              <Input
+                name="title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
             </FormControl>
 
             <FormControl mt={4}>
               <FormLabel>Alt Text</FormLabel>
-              <Input name="altText" type="text" />
+              <Input
+                name="altText"
+                type="text"
+                value={altText}
+                onChange={(e) => setAltText(e.target.value)}
+              />
             </FormControl>
 
             <FormControl mt={4}>
@@ -86,7 +114,7 @@ export default function UploadImageButton() {
             {selectedImage && (
               <Box mt={4}>
                 <Image
-                  src={selectedImage}
+                  src={URL.createObjectURL(selectedImage)}
                   alt="Selected Image"
                   boxSize="150px"
                   objectFit="cover"
@@ -97,7 +125,7 @@ export default function UploadImageButton() {
 
           <ModalFooter>
             <Center w="100%" mt={4}>
-              <Button colorScheme="teal" mr={3}>
+              <Button colorScheme="teal" mr={3} onClick={onUploadHandler}>
                 Submit
               </Button>
               <Button variant="ghost" onClick={onClose}>
