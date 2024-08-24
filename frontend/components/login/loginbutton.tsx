@@ -1,4 +1,5 @@
-import { login } from "@/services/accounts";
+import { useAuth, useAuthDispatch } from "@/hooks/useAuth";
+import { login, logout } from "@/services/accounts";
 import {
   Button,
   Popover,
@@ -21,6 +22,8 @@ import {
 import { ChangeEvent, useState } from "react";
 
 export default function LoginButton() {
+  const { isAuthenticated } = useAuth();
+  const dispatchAuth = useAuthDispatch();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -31,7 +34,29 @@ export default function LoginButton() {
   ): void {
     try {
       const response = await login(email, password);
+      setEmail("");
+      setPassword("");
       console.log(response);
+      dispatchAuth({
+        type: "login",
+        newState: {
+          accessToken: response.data.access,
+          refreshToken: response.data.refresh,
+          isAuthenticated: false,
+        },
+      });
+    } catch (error) {
+      console.error(`Got this error\n${error}`);
+    }
+  }
+
+  async function onLogoutHandler(
+    event: MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void {
+    try {
+      const response = await logout();
+      console.log(response);
+      dispatchAuth({ type: "logout" });
     } catch (error) {
       console.error(`Got this error\n${error}`);
     }
@@ -56,109 +81,119 @@ export default function LoginButton() {
   }
 
   return (
-    <Popover>
-      <PopoverTrigger>
-        <Button size={["sm", "lg"]}>Login</Button>
-      </PopoverTrigger>
-      <PopoverContent>
-        <PopoverArrow />
-        <PopoverCloseButton />
-        <PopoverBody>
-          <Tabs
-            isFitted
-            variant="enclosed"
-            size="md"
-            align="center"
-            bg="gray.50"
-          >
-            <TabList>
-              <Tab>Login</Tab>
-              <Tab>Sign Up</Tab>
-            </TabList>
-            <TabIndicator
-              mt="-1.5px"
-              height="2px"
-              bg="blue.500"
-              borderRadius="1px"
-            />
-            <TabPanels>
-              <TabPanel>
-                <FormControl mt={4}>
-                  <FormLabel>Email address</FormLabel>
-                  <Input
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={handleEmailChange}
-                  />
-                </FormControl>
+    <>
+      {!isAuthenticated ? (
+        <Popover>
+          <PopoverTrigger>
+            <Button size={["sm", "lg"]}>Login</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverBody>
+              <Tabs
+                isFitted
+                variant="enclosed"
+                size="md"
+                align="center"
+                bg="gray.50"
+              >
+                <TabList>
+                  <Tab>Login</Tab>
+                  <Tab>Sign Up</Tab>
+                </TabList>
+                <TabIndicator
+                  mt="-1.5px"
+                  height="2px"
+                  bg="blue.500"
+                  borderRadius="1px"
+                />
+                <TabPanels>
+                  <TabPanel>
+                    <FormControl mt={4}>
+                      <FormLabel>Email address</FormLabel>
+                      <Input
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={handleEmailChange}
+                      />
+                    </FormControl>
 
-                <FormControl mt={4}>
-                  <FormLabel>Password</FormLabel>
-                  <Input
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                  />
-                </FormControl>
+                    <FormControl mt={4}>
+                      <FormLabel>Password</FormLabel>
+                      <Input
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                      />
+                    </FormControl>
 
-                <Button mt={4} colorScheme="teal" onClick={onLoginHandler}>
-                  Submit
-                </Button>
-              </TabPanel>
-              <TabPanel>
-                <FormControl mt={4}>
-                  <FormLabel>Email address</FormLabel>
-                  <Input
-                    type="email"
-                    name="email"
-                    value={email}
-                    onChange={handleEmailChange}
-                  />
-                  <FormHelperText>We'll never share your email.</FormHelperText>
-                </FormControl>
+                    <Button mt={4} colorScheme="teal" onClick={onLoginHandler}>
+                      Submit
+                    </Button>
+                  </TabPanel>
+                  <TabPanel>
+                    <FormControl mt={4}>
+                      <FormLabel>Email address</FormLabel>
+                      <Input
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={handleEmailChange}
+                      />
+                      <FormHelperText>
+                        We'll never share your email.
+                      </FormHelperText>
+                    </FormControl>
 
-                <FormControl mt={4}>
-                  <FormLabel>Username</FormLabel>
-                  <Input
-                    type="text"
-                    name="username"
-                    value={username}
-                    onChange={handleUsernameChange}
-                  />
-                  <FormHelperText>
-                    This is how users will see you
-                  </FormHelperText>
-                </FormControl>
+                    <FormControl mt={4}>
+                      <FormLabel>Username</FormLabel>
+                      <Input
+                        type="text"
+                        name="username"
+                        value={username}
+                        onChange={handleUsernameChange}
+                      />
+                      <FormHelperText>
+                        This is how users will see you
+                      </FormHelperText>
+                    </FormControl>
 
-                <FormControl mt={4}>
-                  <FormLabel>Password</FormLabel>
-                  <Input
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                  />
-                </FormControl>
+                    <FormControl mt={4}>
+                      <FormLabel>Password</FormLabel>
+                      <Input
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                      />
+                    </FormControl>
 
-                <FormControl mt={4}>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <Input
-                    type="password"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={handleConfirmPasswordChange}
-                  />
-                </FormControl>
-                <Button mt={4} colorScheme="teal">
-                  Submit
-                </Button>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
+                    <FormControl mt={4}>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <Input
+                        type="password"
+                        name="confirmPassword"
+                        value={confirmPassword}
+                        onChange={handleConfirmPasswordChange}
+                      />
+                    </FormControl>
+                    <Button mt={4} colorScheme="teal">
+                      Submit
+                    </Button>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+      ) : (
+        <Button size={["sm", "lg"]} onClick={onLogoutHandler}>
+          Logout
+        </Button>
+      )}
+    </>
   );
 }
