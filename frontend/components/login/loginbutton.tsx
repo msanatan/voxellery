@@ -1,5 +1,5 @@
 import { useAuth, useAuthDispatch } from "@/hooks/useAuth";
-import { login, logout } from "@/services/accounts";
+import { login, logout, signup } from "@/services/accounts";
 import {
   Button,
   Popover,
@@ -27,7 +27,27 @@ export default function LoginButton() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+
+  async function onSignupHandler(
+    event: MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void {
+    try {
+      const response = await signup(email, username, password);
+      setEmail("");
+      setUsername("");
+      setPassword("");
+      console.log(response);
+      dispatchAuth({
+        type: "signup",
+        tokens: {
+          accessToken: response.data.access,
+          refreshToken: response.data.refresh,
+        },
+      });
+    } catch (error) {
+      console.error(`Got this error\n${error}`);
+    }
+  }
 
   async function onLoginHandler(
     event: MouseEvent<HTMLButtonElement, MouseEvent>
@@ -71,12 +91,6 @@ export default function LoginButton() {
 
   function handlePasswordChange(event: ChangeEvent<HTMLInputElement>): void {
     setPassword(event.target.value);
-  }
-
-  function handleConfirmPasswordChange(
-    event: ChangeEvent<HTMLInputElement>
-  ): void {
-    setConfirmPassword(event.target.value);
   }
 
   return (
@@ -170,16 +184,7 @@ export default function LoginButton() {
                       />
                     </FormControl>
 
-                    <FormControl mt={4}>
-                      <FormLabel>Confirm Password</FormLabel>
-                      <Input
-                        type="password"
-                        name="confirmPassword"
-                        value={confirmPassword}
-                        onChange={handleConfirmPasswordChange}
-                      />
-                    </FormControl>
-                    <Button mt={4} colorScheme="teal">
+                    <Button mt={4} colorScheme="teal" onClick={onSignupHandler}>
                       Submit
                     </Button>
                   </TabPanel>

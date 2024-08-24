@@ -15,3 +15,11 @@ export function logout(accessToken: string, refreshToken: string) {
     }
   );
 }
+
+export function signup(email: string, username: string, password: string) {
+  return backendApiClient.post("/accounts/signup/", {
+    email,
+    username,
+    password,
+  });
+}
