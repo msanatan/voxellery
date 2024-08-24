@@ -1,5 +1,10 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 
+interface Tokens {
+  refreshToken: string;
+  accessToken: string;
+}
+
 interface AuthState {
   refreshToken?: string;
   accessToken?: string;
@@ -21,17 +26,17 @@ export function useAuthDispatch() {
 
 function authReducer(
   state: AuthState,
-  action: { type: string; newState?: AuthState }
+  action: { type: string; tokens?: Tokens }
 ) {
   switch (action.type) {
     case "signup":
-      localStorage.setItem("accessToken", action.newState?.accessToken ?? "");
-      localStorage.setItem("refreshToken", action.newState?.refreshToken ?? "");
-      return action.newState;
+      localStorage.setItem("accessToken", action.tokens?.accessToken ?? "");
+      localStorage.setItem("refreshToken", action.tokens?.refreshToken ?? "");
+      return { ...action.tokens, isAuthenticated: true };
     case "login":
-      localStorage.setItem("accessToken", action.newState?.accessToken ?? "");
-      localStorage.setItem("refreshToken", action.newState?.refreshToken ?? "");
-      return action.newState;
+      localStorage.setItem("accessToken", action.tokens?.accessToken ?? "");
+      localStorage.setItem("refreshToken", action.tokens?.refreshToken ?? "");
+      return { ...action.tokens, isAuthenticated: true };
     case "logout":
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
