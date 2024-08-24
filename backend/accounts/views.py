@@ -12,8 +12,11 @@ class SignUpView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        user = self.get_object()  # Get the newly created user
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        # Generate the tokens
         refresh = RefreshToken.for_user(user)
         return Response(
             data={
